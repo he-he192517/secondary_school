@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FurSystemTest.Web.Core</name>
+    </assembly>
+    <members>
+        <member name="T:FurSystemTest.Web.Core.JwtHandler">
+            <summary>
+            JWT 授权自定义处理程序
+            </summary>
+        </member>
+    </members>
+</doc>

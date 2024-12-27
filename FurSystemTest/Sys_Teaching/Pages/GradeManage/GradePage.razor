@@ -1,0 +1,52 @@
+﻿@page "/grade"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using System.Diagnostics.CodeAnalysis
+@using Sys_Teaching.Pages.GradeManage.AddDialog
+@inject DialogService DialogService
+
+<Table TItem="ExamScore"
+       ShowToolbar="true">
+    <TableToolbarTemplate>
+        <TableToolbarButton TItem="ExamScore" Icon="fa-fw fa-solid fa-pen-to-square" IsEnableWhenSelectedOneRow="false" Text="批量录入" 
+                            OnClickCallback="@Scoreentry" Color="Color.Primary"></TableToolbarButton>
+    </TableToolbarTemplate>
+    <TableColumns>
+        <TableColumn Text="学号" @bind-Field="@context.ClassName"></TableColumn>
+        <TableColumn Text="学号" @bind-Field="@context.ClassName"></TableColumn>
+        <TableColumn Text="学号" @bind-Field="@context.ClassName"></TableColumn>
+        <TableColumn Text="学号" @bind-Field="@context.ClassName"></TableColumn>
+        <TableColumn Text="学号" @bind-Field="@context.ClassName"></TableColumn>
+        <TableColumn Text="学号" @bind-Field="@context.ClassName"></TableColumn>
+    </TableColumns>
+
+</Table>
+@code {
+    [NotNull]
+    private DialogOption? Option { get; set; }
+
+    /// <summary>
+    /// 成绩录入
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    private async Task Scoreentry(IEnumerable<ExamScore> arg)
+    {
+        
+        var op = new DialogOption
+            {
+                Title = "成绩批量录入",
+                ShowFooter = false,
+                Component = BootstrapDynamicComponent.CreateComponent<InputGradePage>(new Dictionary<string, object?>
+                {
+                    // [nameof(InputGradePage.Model)] = item,
+                    [nameof(InputGradePage.OnCloseAsync)] = new Func<Task>(OnClose)
+                }),
+                Size = Size.ExtraLarge
+            };
+        await DialogService.Show(op);
+    }
+
+
+    private Task OnClose() => Option.CloseDialogAsync();
+}

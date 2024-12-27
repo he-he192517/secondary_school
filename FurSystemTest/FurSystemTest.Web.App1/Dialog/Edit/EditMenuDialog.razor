@@ -1,0 +1,29 @@
+﻿@using FurSystemTest.Application.Services
+@using FurSystemTest.Core.Entites
+@using FurSystemTest.Application
+@inject IMenuService MenuService
+
+<TreeView TItem="MenuEntity" Items="Items"></TreeView>
+
+@code {
+    private List<TreeViewItem<MenuEntity>> Items { get; set; } = new List<TreeViewItem<MenuEntity>>();
+    private string? _clientId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _clientId = Furion.App.GetOptions<AppInfoOptions>().ClientId;
+        await RefreshItems();
+    }
+
+    private async Task RefreshItems()
+    {
+        Items.Clear();
+        var menus = await MenuService.GetMenuListAsync(_clientId);
+        Items.AddRange(CascadingMenu(menus, 0));
+    }
+
+    private static List<TreeViewItem<MenuEntity>> CascadingMenu(List<MenuEntity> menuEntities, int parentId) => menuEntities
+        .Where(x => x.ParentId == parentId)
+        .Select(x => new TreeViewItem<MenuEntity>(x) { Text = x.MenuName, Items = CascadingMenu(menuEntities, x.Id) }).ToList();
+}

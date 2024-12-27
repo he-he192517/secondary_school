@@ -1,0 +1,51 @@
+﻿@page "/courseplan"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using SqlSugar
+@using FurSystemTest.Core
+@using FurSystemTest.Application.Services.Sys_Teach
+@inject ISubjectService SubjectService
+@inject IClassService ClassService
+@inject ITeacherService TeacherService
+@inject IScheduleService ScheduleService
+
+<Table TItem="CoursePlan" OnQueryAsync="OnQueryAsync"
+       ShowToolbar="true"
+       align="center">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.SubjectId">
+            <Template Context="value">
+                @SubjectService.GetSubjectById(value.Row.SubjectId).SubjectName
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="@context.ClassId">
+            <Template Context="value">
+                @ClassService.GetClassById(value.Row.ClassId).Grade@ClassService.GetClassById(value.Row.ClassId).ClassName
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="@context.TeacherId">
+            <Template Context="value">
+                @TeacherService.GetTeacherById(value.Row.TeacherId).TeacherName
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="@context.DayOfWeek"></TableColumn>
+        <TableColumn @bind-Field="@context.ScheduleId">
+            <Template Context="value">
+                @ScheduleService.GetDailyScheduleById(value.Row.ScheduleId).ActivityName
+            </Template>
+        </TableColumn>
+    </TableColumns>
+</Table>
+@code {
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    
+    private async Task<QueryData<CoursePlan>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var coursePlans = await _db.Queryable<CoursePlan>().ToListAsync();
+        return new QueryData<CoursePlan>
+        {
+            Items = coursePlans,
+            TotalCount = coursePlans.Count
+        };
+    }
+
+}

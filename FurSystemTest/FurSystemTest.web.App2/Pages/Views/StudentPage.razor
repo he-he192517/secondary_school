@@ -1,0 +1,40 @@
+﻿@page "/student"
+@using FurSystemTest.Core.Entites.Admission_System
+@using FurSystemTest.Application.Services.Admission_System
+@inject IStudentService StudentService
+@inject ISchoolService SchoolService
+
+<Table TItem="Student" OnQueryAsync="OnQueryAsync" OnSaveAsync="OnSaveAsync"
+       IsBordered="true" IsStriped="true" ShowToolbar="true" ShowExtendButtons="true" ShowRefresh="false">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.Name"></TableColumn>
+        <TableColumn @bind-Field="@context.Gender"></TableColumn>
+        <TableColumn @bind-Field="@context.ExamNumber"></TableColumn>
+        <TableColumn @bind-Field="@context.PhoneNumber"></TableColumn>
+        <TableColumn @bind-Field="@context.IdNumber"></TableColumn>
+        <TableColumn @bind-Field="@context.SchoolId">
+            <Template Context="value">
+                <div>@SchoolService.GetSchoolById(value.Row.SchoolId).SchoolName</div>
+            </Template>
+        </TableColumn>
+    </TableColumns>
+</Table>   
+
+@code {
+
+    private async Task<QueryData<Student>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var students = await StudentService.GetStudentList();
+        return new QueryData<Student>()
+        {
+                Items = students,
+                TotalCount = students.Count
+        };
+    }
+
+    private Task<bool> OnSaveAsync(Student arg1, ItemChangedType arg2)
+    {
+        throw new NotImplementedException();
+    }
+
+}

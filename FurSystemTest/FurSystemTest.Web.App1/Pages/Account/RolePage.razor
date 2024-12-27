@@ -1,0 +1,56 @@
+﻿@page "/role"
+@using FurSystemTest.Web.App1.Dialog.Edit
+@using FurSystemTest.Core.Repository
+@using FurSystemTest.Application
+@inject DialogService DialogService
+@inject IRoleReponsitory RoleReponsitory
+
+<AdminTable TItem="Role" Items="Items" 
+            OnSaveAsync="OnSaveAsync" OnDeleteAsync="OnDeleteAsync" OnQueryAsync="OnQueryAsync"
+            ShowExtendEditButtonCallback="@(items => items.Name != "SysAdmin")" ShowExtendDeleteButtonCallback="@(items => items.Name != "SysAdmin")">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.Name"></TableColumn>
+        <TableColumn @bind-Field="@context.Remark"></TableColumn>
+    </TableColumns>
+    <BeforeRowButtonTemplate>
+        <TableCellButton Text="编辑菜单" OnClick="EditMenu"></TableCellButton>
+    </BeforeRowButtonTemplate>
+</AdminTable>
+@code {
+    private List<Role>? Items { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private void EditMenu()
+    {
+        DialogService.Show(new DialogOption()
+        {
+            Component = BootstrapDynamicComponent.CreateComponent<EditMenuDialog>()
+        });
+    }
+
+    private Task<bool> OnSaveAsync(Role arg1, ItemChangedType arg2)
+    {
+        throw new NotImplementedException();
+    }
+
+    private Task<bool> OnDeleteAsync(IEnumerable<Role> arg)
+    {
+        throw new NotImplementedException();
+    }
+
+    private async Task<QueryData<Role>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var clientId = Furion.App.GetOptions<AppInfoOptions>().ClientId;
+        Items = await RoleReponsitory.GetAllRolesAsync(clientId);
+        return new QueryData<Role>()
+        {
+            Items = Items,
+            TotalCount = Items.Count
+        };
+    }
+
+}

@@ -1,0 +1,47 @@
+﻿@using Furion.Logging;
+@inject NavigationManager NavigationManager
+
+@code {
+
+    /// <summary>
+    /// 可以跳转，但会出现框架页面之后再跳转
+    /// </summary>
+    /// <param name="firstRender"></param>
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        Log.Information("OnAfterRender主页跳转");
+        //NavigationManager.NavigateTo("/Account/Login", true);
+
+
+    }
+
+    /// <summary>
+    /// 写在这里会在debug环境下报错，Release环境下正常
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitializedAsync();
+        //NavigationManager.NavigateTo("/Account/Login", true);
+
+    }
+    /// <summary>
+    /// 可以跳转，但会出现框架页面之后再跳转
+    /// </summary>
+    /// <param name="firstRender"></param>
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        NavigationManager.NavigateTo("/Account/Login", true);
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    /// <summary>
+    /// 报错
+    /// </summary>
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        //NavigationManager.NavigateTo("/Account/Login", true);
+    }
+}

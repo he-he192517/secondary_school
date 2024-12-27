@@ -1,0 +1,1057 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FurSystemTest.Core</name>
+    </assembly>
+    <members>
+        <member name="T:FurSystemTest.Core.ClaimConst">
+            <summary>
+            授权用户常量
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.ClaimConst.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.ClaimConst.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.ClaimConst.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.ClaimConst.Role">
+            <summary>
+            Role
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.UserManager">
+            <summary>
+            当前登录用户信息
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.UserManager.Account">
+            <summary>
+            当前用户账号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.UserManager.UserId">
+            <summary>
+            当前用户Id
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.DbContext">
+            <summary>
+            数据库上下文对象
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.DbContext.Instance">
+            <summary>
+            SqlSugar 数据库实例
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.AppSettingOptions">
+            <summary>
+            应用配置信息
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppSettingOptions.appHSSettings">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.AppHSSetting">
+            <summary>
+            应用配置-对称加密方式
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppHSSetting.domain">
+            <summary>
+            应用域名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppHSSetting.clientId">
+            <summary>
+            应用Key
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppHSSetting.clientSecret">
+            <summary>
+            应用密钥
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.AppRSSetting">
+            <summary>
+            应用配置-非对称加密
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppRSSetting.domain">
+            <summary>
+            应用域名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppRSSetting.clientId">
+            <summary>
+            应用Key
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppRSSetting.publicKey">
+            <summary>
+            公钥-加密
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.AppRSSetting.privateKey">
+            <summary>
+            私钥-解密
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.CurrentUserModel">
+            <summary>
+            当前用户信息
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetAccessCodeRequest.AuthCode">
+            <summary>
+            授权码
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetAccessCodeRequest.SessionCode">
+            <summary>
+            会话Code
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetCoderRequest.ClientId">
+            <summary>
+            应用Id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetCoderRequest.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetCoderRequest.PassWord">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetCodeBySessionCodeRequest.ClientId">
+            <summary>
+            应用Id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetCodeBySessionCodeRequest.SessionCode">
+            <summary>
+            会话code
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.GetTokenDto">
+            <summary>
+            获取token响应结果
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetTokenDto.Token">
+            <summary>
+            token
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetTokenDto.RefreshToken">
+            <summary>
+            刷新token
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetTokenDto.Expires">
+            <summary>
+            过期时间,多少s后
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetTokenDto.Scope">
+            <summary>
+            资源域
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.GetTokenRequestDTO.authCode">
+            <summary>
+            授权code
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.LogOutRequest.sessionCode">
+            <summary>
+            会话code
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.ResponseModel">
+            <summary>
+            响应结果
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.ResponseModel.Message">
+            <summary>
+            响应消息
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Dtos.ResponseModel`1">
+            <summary>
+            有对象的响应结果
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.SessionCodeUser.ExpiresTime">
+            <summary>
+                过期时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.SessionCodeUser.CurrentUser">
+            <summary>
+                用户信息
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Admission_System.Admission">
+            <summary>
+            录取表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Admission.StudentId">
+            <summary>
+            学生ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Admission.TotalScore">
+            <summary>
+            总分
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Admission.AdmittedSchool">
+            <summary>
+            录取院校
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Admission.AdmissionNoticeConfirmed">
+            <summary>
+            录取通知书确认状态
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Admission.AdmissionTime">
+            <summary>
+            录取时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Admission.ClassId">
+            <summary>
+            班级
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Admission_System.Class">
+            <summary>
+            班级表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Class.ClassName">
+            <summary>
+            班级名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Class.SchoolID">
+            <summary>
+            学校ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Class.GradeName">
+            <summary>
+            班级名称
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Admission_System.School">
+            <summary>
+            学校表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.School.SchoolName">
+            <summary>
+            学校名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.School.SchoolType">
+            <summary>
+            学校类型（高中、初中、混合）
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.School.ContactNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.School.Address">
+            <summary>
+            地址
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Admission_System.Student">
+            <summary>
+            学生表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.Gender">
+            <summary>
+            性别（男、女）
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.ExamNumber">
+            <summary>
+            准考证号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.CandidateNumber">
+            <summary>
+            考生号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.PhoneNumber">
+            <summary>
+            电话号码
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.IdNumber">
+            <summary>
+            身份证号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.SchoolId">
+            <summary>
+            学校ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.Student.ClassId">
+            <summary>
+            班级
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Admission_System.StudentClass">
+            <summary>
+            学生班级关联表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.StudentClass.StudentID">
+            <summary>
+            学生ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.StudentClass.ClassID">
+            <summary>
+            班级ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Admission_System.StudentClass.IsConfirmed">
+            <summary>
+            确认状态
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.ApplicationRole">
+            <summary>
+            应用表
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Applications">
+            <summary>
+            应用表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Applications.ClientId">
+            <summary>
+            客户端ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Applications.ClientSecret">
+            <summary>
+            客户端密钥
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Applications.Domain">
+            <summary>
+            域名
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.MenuEntity">
+            <summary>
+            菜单表
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Class">
+            <summary>
+            班级信息表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Class.ClassName">
+            <summary>
+            班级名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Class.HomeroomTeacherId">
+            <summary>
+            班主任教师ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Class.ClassStatus">
+            <summary>
+            班级状态
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Class.Grade">
+            <summary>
+            年级
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.CoursePlan">
+            <summary>
+            开课计划表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.CoursePlan.SubjectId">
+            <summary>
+            学科ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.CoursePlan.ClassId">
+            <summary>
+            班级ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.CoursePlan.ScheduleId">
+            <summary>
+            上课时间ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.CoursePlan.TeacherId">
+            <summary>
+            教师ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.CoursePlan.DayOfWeek">
+            <summary>
+            星期几
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.DailySchedule">
+            <summary>
+            作息时间表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.DailySchedule.ActivityName">
+            <summary>
+            活动名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.DailySchedule.StartTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.DailySchedule.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Department.DepartmentId">
+            <summary>
+            部门ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Department.DepartmentName">
+            <summary>
+            部门名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Department.Responsibilities">
+            <summary>
+            职责
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Exam">
+            <summary>
+            考试表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Exam.ExamId">
+            <summary>
+            考试ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Exam.ExamName">
+            <summary>
+            考试名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Exam.ExamClass">
+            <summary>
+            考试班级
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Exam.ExamDate">
+            <summary>
+            考试时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Exam.SemesterId">
+            <summary>
+            学期ID
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.ExamScore">
+            <summary>
+            成绩表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.ScoreId">
+            <summary>
+            成绩ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.StudentNumber">
+            <summary>
+            学号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.SubjectName">
+            <summary>
+            考试名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.ClassName">
+            <summary>
+            班级名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.TeacherId">
+            <summary>
+            教师编号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.Score">
+            <summary>
+            分数
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.EntryDate">
+            <summary>
+            录入时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.ExamId">
+            <summary>
+            考试ID
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Semester">
+            <summary>
+            学期表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Semester.SemesterId">
+            <summary>
+            学期ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Semester.SemesterName">
+            <summary>
+            学期名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Semester.StartDate">
+            <summary>
+            开始日期
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Semester.EndDate">
+            <summary>
+            结束日期
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Semester.IsActive">
+            <summary>
+            是否为当前学期
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Semester.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Student">
+            <summary>
+            学生表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.StudentId">
+            <summary>
+            学生ID，自增主键
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.ClassId">
+            <summary>
+            班级ID，假设需要与班级表关联
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.Name">
+            <summary>
+            学生姓名，非空
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.Gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.BirthDate">
+            <summary>
+            出生日期
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.Ethnicity">
+            <summary>
+            民族
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.IdCardNumber">
+            <summary>
+            身份证号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.EnrollmentStatus">
+            <summary>
+            学籍状态
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.EnrollmentDate">
+            <summary>
+            入学时间
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.PhoneNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.StudentNumber">
+            <summary>
+            学号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Student.Remarks">
+            <summary>
+            备注字段
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Subject">
+            <summary>
+            学科表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Subject.SubjectName">
+            <summary>
+            学科名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Subject.IsActive">
+            <summary>
+            激活状态
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Teacher">
+            <summary>
+            教师信息表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Teacher.TeacherCode">
+            <summary>
+            教师编号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Teacher.TeacherName">
+            <summary>
+            教师姓名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Teacher.EntryYear">
+            <summary>
+            入编年份
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Teacher.IsActive">
+            <summary>
+            激活状态
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Teacher.Position">
+            <summary>
+            职务
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Teacher.DepartmentId">
+            <summary>
+            所在部门
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Transfer">
+            <summary>
+            教师调动信息表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.TransferId">
+            <summary>
+            调动ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.TeacherId">
+            <summary>
+            教师ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.FromDepartmentId">
+            <summary>
+            原部门ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.ToDepartmentId">
+            <summary>
+            目标部门ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.TransferDate">
+            <summary>
+            调动日期
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.Reason">
+            <summary>
+            调动原因
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.NewResponsibilities">
+            <summary>
+            新职责
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.OldResponsibilities">
+            <summary>
+            原职责
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.TransferType">
+            <summary>
+            调动类型
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.Status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Transfer.Notes">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.NoticeType.Unconfirmed">
+            <summary>
+            未确认
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.NoticeType.Confirmed">
+            <summary>
+            已确认
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.SchoolTypeEnum.HighSchool">
+            <summary>
+            高中
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.SchoolTypeEnum.JuniorHighSchool">
+            <summary>
+            初中
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.SchoolTypeEnum.Mixed">
+            <summary>
+            混合
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.Grade.Grade1">
+            <summary>
+            高一
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.Grade.Grade2">
+            <summary>
+            高二
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.Grade.Grade3">
+            <summary>
+            高三
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.Grade.Grade4">
+            <summary>
+            初一
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.Grade.Grade5">
+            <summary>
+            初二
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.Grade.Grade6">
+            <summary>
+            初三
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.GenderType.Man">
+            <summary>
+            男
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Admission_System.GenderType.Women">
+            <summary>
+            女
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Enum.Sys_Teach.Ethnicity">
+            <summary>
+            民族
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Enum.Sys_Teach.TransferType">
+            <summary>
+            调动类型
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Sys_Teach.TransferType.PositionChange">
+            <summary>
+            职位变动
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Enum.Sys_Teach.TransferType.DepartmentChange">
+            <summary>
+            部门变动
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Enum.Sys_Teach.TransferStatus">
+            <summary>
+            调动状态枚举
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.SecurityConst">
+            <summary>
+            权限常量
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Role">
+            <summary>
+            角色表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Role.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Role.Remark">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.RoleSecurity">
+            <summary>
+            角色和权限关系表
+            </summary>
+            
+        </member>
+        <member name="P:FurSystemTest.Core.RoleSecurity.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.RoleSecurity.SecurityId">
+            <summary>
+            权限Id
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.Security">
+            <summary>
+            权限表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Security.UniqueName">
+            <summary>
+            权限唯一名（每一个接口）
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.User">
+            <summary>
+            用户表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.User.UserName">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.User.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.User.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.User.Mobile">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.User.Status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.UserRole">
+            <summary>
+            用户和角色关系表
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.UserRole.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.UserRole.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Core.AuthorizationManager">
+            <summary>
+            权限管理器
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.AuthorizationManager._db">
+            <summary>
+            数据库上下文
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Core.AuthorizationManager.GetUserId">
+            <summary>
+            获取用户Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.AuthorizationManager.CheckSecurity(System.String)">
+            <summary>
+            检查权限
+            </summary>
+            <param name="resourceId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FurSystemTest.Core.IAuthorizationManager">
+            <summary>
+            权限管理器
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Core.IAuthorizationManager.GetUserId">
+            <summary>
+            获取用户 Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.IAuthorizationManager.CheckSecurity(System.String)">
+            <summary>
+            检查授权，资源id根据需要可以对应到数据库中的security表的UniqueName
+            </summary>
+            <param name="resourceId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FurSystemTest.Core.Repository.ApplicationService">
+            <summary>
+            应用表数据库仓储
+            </summary>
+        </member>
+        <member name="F:FurSystemTest.Core.Repository.ApplicationService.Db">
+            <summary>
+            依赖注入
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IApplicationService.GetApplication(System.String)">
+            <summary>
+            根据ClientId获取应用信息
+            </summary>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IRoleReponsitory.GetRoleByUserName(System.String,System.String)">
+            <summary>
+            根据应用名称和用户名获取权限名称
+            </summary>
+            <param name="username"></param>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IRoleReponsitory.GetRoleNameByUserId(System.Int32,System.String)">
+            <summary>
+            根据应用名称和用户id获取权限名称
+            </summary>
+            <param name="userId"></param>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IRoleReponsitory.GetAllRolesAsync(System.String)">
+            <summary>
+            根据用户名获取所有权限
+            </summary>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IUserReponsitory.CheckUser(System.String,System.String)">
+            <summary>
+            判断用户是否存在
+            </summary>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IUserReponsitory.GetUser(System.String)">
+            <summary>
+            根据用户名获取用户信息
+            </summary>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Core.Repository.IUserReponsitory.GetAllUserAsync">
+            <summary>
+            获取所有用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FurionMasaBlazorSqlSugar.Core.ResourceConst">
+            <summary>
+            资源表常量
+            </summary>
+        </member>
+        <member name="F:FurionMasaBlazorSqlSugar.Core.ResourceConst.System">
+            <summary>
+            系统内置编码
+            </summary>
+        </member>
+    </members>
+</doc>

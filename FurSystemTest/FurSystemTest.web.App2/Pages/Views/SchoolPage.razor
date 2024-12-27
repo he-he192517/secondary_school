@@ -1,0 +1,33 @@
+﻿@page "/schoolpage"
+@using FurSystemTest.Core.Entites.Admission_System
+@using FurSystemTest.Application.Services.Admission_System
+@inject ISchoolService SchoolService
+
+
+<Table TItem="School" OnQueryAsync="OnQueryAsync" OnSaveAsync="OnSaveAsync"
+       IsBordered="true" IsStriped="true" ShowToolbar="true" ShowExtendButtons="true" ShowRefresh="false">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.SchoolName"></TableColumn>
+        <TableColumn @bind-Field="@context.SchoolType"></TableColumn>
+        <TableColumn @bind-Field="@context.ContactNumber"></TableColumn>
+        <TableColumn @bind-Field="@context.Address"></TableColumn>
+    </TableColumns>
+</Table>
+@code {
+
+    private async Task<QueryData<School>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var schools = await SchoolService.GetSchoolListAsync();
+        return new QueryData<School>()
+        {
+            Items = schools,
+            TotalCount = schools.Count
+        };
+    }
+
+    private async Task<bool> OnSaveAsync(School arg1, ItemChangedType arg2)
+    {
+        return await SchoolService.SaveOrUpdateSchoolAsync(arg1);
+    }
+
+}

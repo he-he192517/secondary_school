@@ -1,0 +1,44 @@
+﻿@page "/"
+@using FurSystemTest.Application.Services
+@using FurSystemTest.Application.Utils
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
+@inject IAccountService AccountService
+@inject IHttpContextAccessor HttpContextAccessor
+@inject AjaxService AjaxService
+
+<PageTitle>Index</PageTitle>
+
+<h1>欢迎来到web1</h1>
+<p><a href="">跳转到web2</a></p>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="这是我的主页" />
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        var token = UtilHelper.GetCookie(HttpContextAccessor.HttpContext, "token");
+        if (string.IsNullOrEmpty(token))
+        {
+            NavigationManager.NavigateTo("https://www.sso.com:7137/Account/Login?clientId=web1&redirectUrl=https://www.web1.com:7108/login-redirect");
+            // NavigationManager.NavigateTo("https://www.baidu.com");
+            return;
+        }
+        HttpContextAccessor.HttpContext!.Request.Headers["Authorization"] = $"Bearer {token}";
+        var response = AccountService.GetUserInfo();
+
+        // 检查HTTP响应的状态
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext.Response.StatusCode == 401)
+        {
+            NavigationManager.NavigateTo("https://www.sso.com:7137/Account/Login?clientId=web1&redirectUrl=www.web1.com:7108/login-redirect");
+        }
+        else
+        {
+        // 处理成功的情况，例如使用response.Data
+        }
+    }
+}

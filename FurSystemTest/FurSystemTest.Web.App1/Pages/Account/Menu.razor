@@ -1,0 +1,100 @@
+﻿@page "/menu"
+@using FurSystemTest.Core.Entites
+@using FurSystemTest.Application.Services
+@using System.Diagnostics.CodeAnalysis
+@using FurSystemTest.Application
+@inject IMenuService MenuService
+
+@if (_isDataLoaded)
+{
+    <AdminTable TItem="MenuEntity"
+                OnSaveAsync="OnSavaAsync" OnDeleteAsync="OnDeleteAsync" OnQueryAsync="OnQueryAsync"
+                IsTree="true" TreeNodeConverter="TreeNodeConverter">
+        <TableColumns>
+            <TableColumn @bind-Field="@context.MenuName"></TableColumn>
+            <TableColumn @bind-Field="@context.Icon"></TableColumn>
+            <TableColumn @bind-Field="@context.Url"></TableColumn>
+            <TableColumn @bind-Field="@context.ParentId" Visible="false" Text="父菜单">
+                <EditTemplate Context="value">
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <SelectTree @bind-Value="value.ParentId" Items="Items" DisplayText="父菜单"></SelectTree>
+                    </div>
+                </EditTemplate>
+            </TableColumn>
+        </TableColumns>
+    </AdminTable>
+}
+@code {
+    private List<TreeViewItem<int>> Items { get; set; } = new List<TreeViewItem<int>>();
+
+    private List<MenuEntity> _menus = new List<MenuEntity>();
+
+    private bool _isDataLoaded = false;
+    private string? _clientId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _clientId = Furion.App.GetOptions<AppInfoOptions>().ClientId;
+        await RefreshItems();
+        _isDataLoaded = true; // 数据加载完成后设置标志位
+    }
+
+    private async Task RefreshItems()
+    {
+        Items.Clear();
+        _menus = await MenuService.GetMenuListAsync(_clientId);
+        Items.Add(new TreeViewItem<int>(0) { Text = "顶级菜单" });
+        Items.AddRange(CascadingMenu(_menus, 0));
+    }
+
+    private static List<TreeViewItem<int>> CascadingMenu(List<MenuEntity> menuEntities, int parentId) => menuEntities
+        .Where(x => x.ParentId == parentId)
+        .Select(x => new TreeViewItem<int>(x.Id) { Text = x.MenuName, Items = CascadingMenu(menuEntities, x.Id) }).ToList();
+
+    private async Task<bool> OnSavaAsync(MenuEntity arg1, ItemChangedType arg2)
+    {
+        arg1.ClientId = Furion.App.GetOptions<AppInfoOptions>().ClientId;
+        await MenuService.SaveMenuAsync(arg1);
+        await RefreshItems();
+        return true;
+    }
+
+    private async Task<bool> OnDeleteAsync(IEnumerable<MenuEntity> arg)
+    {
+        if (!await MenuService.DeleteMenuAsync(arg)) return false;
+        await RefreshItems();
+        return true;
+    }
+
+    private Task<IEnumerable<TableTreeNode<MenuEntity>>> TreeNodeConverter(IEnumerable<MenuEntity> arg)
+    {
+        // 构造树状数据结构
+        var ret = BuildTreeNodes(arg, 0);
+        return Task.FromResult(ret);
+
+        IEnumerable<TableTreeNode<MenuEntity>> BuildTreeNodes(IEnumerable<MenuEntity> items, int parentId)
+        {
+            var tableTreeNodes = new List<TableTreeNode<MenuEntity>>();
+            tableTreeNodes.AddRange(items.Where(i => i.ParentId == parentId).Select((menu, index) => new TableTreeNode<MenuEntity>(menu)
+            {
+                // 此处为示例，假设偶行数据都有子数据
+                HasChildren = items.Any(i => i.ParentId == menu.Id),
+                // 获得子项集合
+                    Items = BuildTreeNodes(items, menu.Id)
+            }));
+            return tableTreeNodes;
+        }
+    }
+
+    private async Task<QueryData<MenuEntity>> OnQueryAsync(QueryPageOptions arg)
+    {
+        _menus = await MenuService.GetMenuListAsync(_clientId);
+        return new QueryData<MenuEntity>
+        {
+            Items = _menus,
+            TotalCount = _menus.Count
+        };
+    }
+
+}

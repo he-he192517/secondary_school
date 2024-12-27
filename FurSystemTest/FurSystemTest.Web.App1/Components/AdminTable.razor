@@ -1,0 +1,8 @@
+﻿@typeparam TItem
+
+<Table TItem="TItem" Items="Items" IsBordered="true" IsStriped="true" TableColumns="TableColumns" ShowToolbar="true" ShowExtendButtons="true"
+       BeforeRowButtonTemplate="BeforeRowButtonTemplate" @ref="Instance"
+       OnSaveAsync="OnSaveAsync" OnDeleteAsync="OnDeleteAsync" OnQueryAsync="OnQueryAsync"
+       ShowExtendEditButtonCallback="ShowExtendEditButtonCallback" ShowExtendDeleteButtonCallback="ShowExtendDeleteButtonCallback"
+       RowButtonTemplate="RowButtonTemplate!"
+       IsTree="IsTree" TreeNodeConverter="TreeNodeConverter"></Table>

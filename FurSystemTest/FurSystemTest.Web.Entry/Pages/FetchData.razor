@@ -1,0 +1,57 @@
+﻿@page "/fetchdata"
+
+@using FurSystemTest.Web.Core
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService authorizationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>如果没有出现表格，是因为基于角色的认证写法由问题</p>
+
+
+    //基于角色的认证机制在Razor页面中的使用
+    //AuthorizeView中还没有找到可以直接使用的Roles属性，所以这里使用了代码判断
+    //如果当前用户的角色是SysAdmin，则显示表格，否则显示提示信息
+    //这里的代码判断是在Razor页面中进行的，如果需要在后台进行判断，可以使用IAuthorizationService
+    //IAuthorizationService的使用可以参考Furion官方文档：https://www.cnblogs.com/furion/p/14071507.html
+
+
+    <AuthorizeView >
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Temp. (C)</th>
+                    <th>Temp. (F)</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var forecast in forecasts)
+                {
+                    <tr>
+                        <td>@forecast.Date.ToShortDateString()</td>
+                        <td>@forecast.TemperatureC</td>
+                        <td>@forecast.TemperatureF</td>
+                        <td>@forecast.Summary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </AuthorizeView>
+
+
+<p>计算机科学与技术</p>
+@code {
+    private AuthenticationState authState { get; set; }
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+}

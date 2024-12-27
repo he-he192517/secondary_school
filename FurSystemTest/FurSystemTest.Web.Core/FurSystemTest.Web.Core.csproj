@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<NoWarn>1701;1702;1591</NoWarn>
+		<DocumentationFile>FurSystemTest.Web.Core.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="FurSystemTest.Web.Core.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="BootstrapBlazor" Version="7.10.7" />
+	  <PackageReference Include="BootstrapBlazor.FontAwesome" Version="7.5.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.33" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FurSystemTest.Application\FurSystemTest.Application.csproj" />
+	</ItemGroup>
+
+</Project>

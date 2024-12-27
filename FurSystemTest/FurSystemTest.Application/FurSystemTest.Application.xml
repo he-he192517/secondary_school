@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FurSystemTest.Application</name>
+    </assembly>
+    <members>
+        <member name="T:FurSystemTest.Application.RBAC.IJwtService">
+            <summary>
+            JWT服务接口
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.IJwtService.GetCodeAsync(System.String,System.String,System.String)">
+            <summary>
+            获取授权码
+            </summary>
+            <param name="clientId"></param>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.IJwtService.GetCodeBySessionCode(System.String,System.String)">
+            <summary>
+            根据会话Code获取授权码
+            </summary>
+            <param name="clientId"></param>
+            <param name="sessionCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.IJwtService.GetTokenWithRefresh(System.String)">
+            <summary>
+            获取Token+RefreshToken
+            </summary>
+            <param name="authCode"></param>
+            <returns>Token+RefreshToken</returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.IJwtService.GetTokenByRefresh(System.String,System.String)">
+            <summary>
+            基于refreshToken获取Token
+            </summary>
+            <param name="refreshToken"></param>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.ISsoService.GetCodeAsync(FurSystemTest.Core.Dtos.GetCoderRequest)">
+            <summary>
+            获取授权码
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.ISsoService.GetToken(FurSystemTest.Core.Dtos.GetTokenRequestDTO)">
+            <summary>
+            根据授权码,获取Token
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.ISsoService.GetCodeBySessionCode(FurSystemTest.Core.Dtos.GetCodeBySessionCodeRequest)">
+            <summary>
+            根据会话code获取授权码
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.ISsoService.LogOutApp(FurSystemTest.Core.Dtos.LogOutRequest)">
+            <summary>
+            退出登录
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="T:FurSystemTest.Application.RBAC.JwtBaseService">
+            <summary>
+            jwt服务
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.GetCodeAsync(System.String,System.String,System.String)">
+            <summary>
+            获取授权码
+            </summary>
+            <param name="clientId"></param>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.GetCodeBySessionCode(System.String,System.String)">
+            <summary>
+            根据会话code获取授权码
+            </summary>
+            <param name="clientId"></param>
+            <param name="sessionCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.GetTokenByRefresh(System.String,System.String)">
+            <summary>
+            根据刷新Token获取Token
+            </summary>
+            <param name="refreshToken"></param>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.GetTokenWithRefresh(System.String)">
+            <summary>
+            根据授权码,获取Token
+            </summary>
+            <param name="authCode"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.IssueToken(FurSystemTest.Core.Dtos.CurrentUserModel,System.String,System.Double)">
+            <summary>
+            签发token
+            </summary>
+            <param name="userModel"></param>
+            <param name="clientId"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.GetAppInfoByAppKey(System.String)">
+            <summary>
+            根据appKey获取应用信息
+            </summary>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtBaseService.GetCreds(System.String)">
+            <summary>
+            获取加密方式
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtRsService.GetCreds(System.String)">
+            <summary>
+            生成非对称加密签名凭证
+            </summary>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.JwtRsService.GetAppInfoByAppKey(System.String)">
+            <summary>
+            根据appKey获取应用信息
+            </summary>
+            <param name="clientId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FurSystemTest.Application.RBAC.RbacService">
+            <summary>
+            角色管理服务
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.Login(FurSystemTest.Application.LoginInput)">
+            <summary>
+            登录（免授权）
+            </summary>
+            <param name="input"></param>
+            <remarks>管理员：admin/admin；普通用户：Furion/dotnetchina</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.ViewRoles">
+            <summary>
+            查看用户角色，，也可以考虑使用_authManager读取用户Id
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.ViewSecuries">
+            <summary>
+            查看用户权限，也可以考虑使用_authManager读取用户Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.GetRoles">
+            <summary>
+            角色列表
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.InsertRole(FurSystemTest.Application.RoleInput)">
+            <summary>
+            新增角色
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.GiveUserRole(System.Int32[])">
+            <summary>
+            为用户分配角色
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.GetSecurities">
+            <summary>
+            查看系统所有的权限（免授权）
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.RbacService.GiveRoleSecurity(System.Int32,System.Int32[])">
+            <summary>
+            为角色分配权限
+            </summary>
+        </member>
+        <member name="T:FurSystemTest.Application.RBAC.SsoService">
+            <summary>
+            登录页面
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.SsoService.GetCodeAsync(FurSystemTest.Core.Dtos.GetCoderRequest)">
+            <summary>
+            获取授权码
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.SsoService.GetToken(FurSystemTest.Core.Dtos.GetTokenRequestDTO)">
+            <summary>
+            根据授权码,获取Token
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.SsoService.GetCodeBySessionCode(FurSystemTest.Core.Dtos.GetCodeBySessionCodeRequest)">
+            <summary>
+            根据会话code获取授权码
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.RBAC.SsoService.LogOutApp(FurSystemTest.Core.Dtos.LogOutRequest)">
+            <summary>
+            退出登录
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FurSystemTest.Application.LoginInput">
+            <summary>
+            登录输入参数
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.LoginInput.Account">
+            <summary>
+            用户名
+            </summary>
+            <example>admin</example>
+        </member>
+        <member name="P:FurSystemTest.Application.LoginInput.Password">
+            <summary>
+            密码
+            </summary>
+            <example>admin</example>
+        </member>
+        <member name="T:FurSystemTest.Application.LoginOutput">
+            <summary>
+            登录输出参数
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.LoginOutput.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.LoginOutput.Account">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.LoginOutput.AccessToken">
+            <summary>
+            Token
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.RoleDto.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.RoleDto.Remark">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.RoleInput.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.RoleInput.Remark">
+            <summary>
+            角色描述
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.SecurityDto.Id">
+            <summary>
+            权限Id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.SecurityDto.UniqueName">
+            <summary>
+            权限唯一名（每一个接口）
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.UserDto.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Application.UserDto.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.AccountService.GetUserInfo">
+            <summary>
+            获取用户信息，接口需要进行权限校验
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.AccountService.GetAccessCode(FurSystemTest.Core.Dtos.GetAccessCodeRequest)">
+            <summary>
+            根据authCode获取token
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.AccountService.LogOut(FurSystemTest.Core.Dtos.LogOutRequest)">
+            <summary>
+            退出登录
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ClassService.DiviClass(System.Collections.Generic.List{FurSystemTest.Core.Entites.Admission_System.Admission},System.Int32,System.Int32)">
+            <summary>
+            分班
+            </summary>
+            <param name="asAdmissions">按成绩排序后的学生列表</param>
+            <param name="numberOfClasses">班级数量</param>
+            <param name="method">分班方式: 1 表示按成绩，2 表示平均分配</param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ClassService.InitializeClasses(System.Int32)">
+            <summary>
+            初始化班级列表
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ClassService.SaveClassList(System.Collections.Generic.List{FurSystemTest.Core.Entites.Admission_System.Class})">
+            <summary>
+            创建class
+            </summary>
+            <param name="classList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ClassService.SaveClass(FurSystemTest.Core.Entites.Admission_System.Class)">
+            <summary>
+            新增班级
+            </summary>
+            <param name="cClass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.IAdmissionService.GetAdmissionAsync">
+            <summary>
+            获取录取信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ISchoolService.GetSchoolListAsync">
+            <summary>
+            获取学校列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ISchoolService.SaveOrUpdateSchoolAsync(FurSystemTest.Core.Entites.Admission_System.School)">
+            <summary>
+            新增或更新学校
+            </summary>
+            <param name="school"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ISchoolService.GetSchoolById(System.Int32)">
+            <summary>
+            根据学校ID获取学校信息
+            </summary>
+            <param name="schoolId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Admission_System.ISchoolService.GetSchoolByName(System.String)">
+            <summary>
+            根据学校名称获取学校信息
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.IAccountService.GetUserInfo">
+            <summary>
+            获取用户信息，接口需要进行权限校验
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.IAccountService.GetAccessCode(FurSystemTest.Core.Dtos.GetAccessCodeRequest)">
+            <summary>
+            根据authCode获取token
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.IAccountService.LogOut(FurSystemTest.Core.Dtos.LogOutRequest)">
+            <summary>
+            退出登录
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.IMenuService.GetMenuListAsync(System.String)">
+            <summary>
+            获取全部菜单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.IMenuService.SaveMenuAsync(FurSystemTest.Core.Entites.MenuEntity)">
+            <summary>
+            保存菜单（新增/更新）
+            </summary>
+            <param name="menu"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.IMenuService.DeleteMenuAsync(System.Collections.Generic.IEnumerable{FurSystemTest.Core.Entites.MenuEntity})">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="meuns"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Sys_Teach.IDailyScheService.GetDailySchedule">
+            <summary>
+            获取作息时间表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Sys_Teach.IScheduleService.GetDailyScheduleById(System.Int32)">
+            <summary>
+            根据id获取日程信息
+            </summary>
+            <param name="scheduleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Sys_Teach.ISubjectService.GetSubjectById(System.Int32)">
+            <summary>
+            根据学科id获取学科信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Services.Sys_Teach.ITeacherService.GetTeacherById(System.Int32)">
+            <summary>
+            根据教师ID获取教师信息
+            </summary>
+            <param name="teacherId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FurSystemTest.Application.Utils.ServiceLocator">
+            <summary>
+            Ioc获取
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.Utils.UtilHelper.GetQueryParams(System.String)">
+            <summary>
+            获取 URL 参数
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Utils.UtilHelper.GetCookie(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            获取 Cookie
+            </summary>
+            <param name="httpContext"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Utils.UtilHelper.SetCookie(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String,System.Int32,System.String)">
+            <summary>
+            设置 Cookie
+            </summary>
+            <param name="httpContext"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="seconds"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:FurSystemTest.Application.Utils.UtilHelper.ClearCookie(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String)">
+            <summary>
+            清除 Cookie
+            </summary>
+            <param name="httpContext"></param>
+            <param name="name"></param>
+            <param name="path"></param>
+        </member>
+        <member name="T:FurSystemTest.Application.Util.Cachelper">
+            <summary>
+            缓存帮助类-redis
+            </summary>
+        </member>
+        <member name="M:FurSystemTest.Application.Util.Cachelper.StringSet``1(System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FurSystemTest.Application.Util.Cachelper.StringGet``1(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

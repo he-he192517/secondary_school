@@ -1,0 +1,37 @@
+﻿@page  "/teacher"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using SqlSugar
+@using FurSystemTest.Core
+
+<Table TItem="Teacher"
+       OnQueryAsync="OnQueryAsync" ShowToolbar="true"
+       align="center">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.TeacherCode"></TableColumn>
+        <TableColumn @bind-Field="@context.TeacherName"></TableColumn>
+        <TableColumn @bind-Field="@context.EntryYear"></TableColumn>
+        <TableColumn @bind-Field="@context.Position"></TableColumn>
+        <TableColumn @bind-Field="@context.DepartmentId">
+            <Template Context="vv">
+                @GetDepartmentById(vv.Row.DepartmentId).DepartmentName
+            </Template>
+        </TableColumn>
+    </TableColumns>
+</Table>
+@code {
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    private async Task<QueryData<Teacher>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var teachers = await _db.Queryable<Teacher>().ToListAsync();
+        return new QueryData<Teacher>
+        {
+            Items = teachers,
+            TotalCount = teachers.Count
+        };
+    }
+
+    private Department GetDepartmentById(int departmentId)
+    {
+        return _db.Queryable<Department>().Where(d => d.DepartmentId == departmentId).First();
+    }
+}

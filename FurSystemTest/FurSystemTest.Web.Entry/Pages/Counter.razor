@@ -1,0 +1,101 @@
+﻿@page "/counter"
+
+@using Furion.Logging
+@layout MainLayout
+
+@attribute [Authorize]
+
+@inject ISystemService _systemService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AjaxService AjaxService
+
+<Ajax></Ajax>
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+<button onclick="location.reload()">刷新页面</button>
+
+@if (authState.User.IsInRole("SysAdmin"))
+{
+    <p>当前用户是系统管理员</p>
+}
+else if (authState.User.IsInRole("SysUser"))
+{
+    <p>当前用户是系统用户</p>
+}
+else if (authState.User.IsInRole("DataAdmin"))
+{
+    <p>当前用户是数据管理员</p>
+}
+else
+{
+    <p>当前用户是普通用户</p>
+}
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+
+<Button Color="Color.Primary" Icon="fa-solid fa-font-awesome" Text="测试" />
+
+<hr />
+<AuthorizeView>
+    <p>登录成功，没有角色验证，没有策略验证</p>
+    <span>
+
+        <Button Color="Color.Secondary" Text="退出登录" OnClick="OnLogoutAsync" />
+
+        <p>当前用户：@authState.User.Claims.FirstOrDefault(it => it.Type == "Name")?.Value</p>
+        <p>当前角色：@authState.User.Claims.FirstOrDefault(it => it.Type == "Role")?.Value</p>
+
+    </span>
+
+
+</AuthorizeView>
+
+<hr />
+@if (isAuth)
+{
+    <p>当前是登录用户</p>
+    <Button Color="Color.Secondary" Text="退出登录" OnClick="OnLogoutAsync" />
+
+    <p>当前用户：@authState.User.Claims.FirstOrDefault(it => it.Type == "Name")?.Value</p>
+    <p>当前角色：@authState.User.Claims.FirstOrDefault(it => it.Type == "Role")?.Value</p>
+}
+else
+{
+    <p>当前用户未登录！！！！</p>
+}
+
+@code {
+    private bool isAuth { get; set; }
+    private AuthenticationState authState { get; set; }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        isAuth = authState.User.Identity.IsAuthenticated;
+
+    }
+
+
+    private async Task OnLogoutAsync()
+    {
+        var option = new AjaxOption
+        {
+            Url = "/api/rbac/Logout",
+            Data = new { },
+
+        };
+        await AjaxService.InvokeAsync(option);
+        Log.Information("退出登录成功");
+        StateHasChanged();
+        
+    }
+}

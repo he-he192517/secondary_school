@@ -1,0 +1,7 @@
+bin
+obj
+.vs
+publish
+debug
+release
+application.log

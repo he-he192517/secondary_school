@@ -1,0 +1,76 @@
+﻿@page "/adminssion"
+@using FurSystemTest.Core.Entites.Admission_System
+@using FurSystemTest.Application.Services.Admission_System
+@using FurSystemTest.web.App2.Pages.addDialog
+@using System.Diagnostics.CodeAnalysis
+@inject IAdmissionService AdmissionService
+@inject DialogService DialogService
+
+<Table TItem="Admission" OnQueryAsync="OnQueryAsync" OnSaveAsync="OnSaveAsync"
+       IsBordered="true" IsStriped="true" ShowToolbar="true" ShowExtendButtons="true" ShowRefresh="false">
+    <TableToolbarTemplate>
+        <TableToolbarButton TItem="Admission" Text="批量录取" Icon="fa fa-upload"
+                            OnClickCallback="@ImportAdmission" />
+        <TableToolbarButton TItem="Admission" Text="分班"Icon=""
+                            OnClickCallback="@DiviClass"></TableToolbarButton>
+    </TableToolbarTemplate>
+    <TableColumns>
+        <TableColumn @bind-Field="@context.StudentId"></TableColumn>
+        <TableColumn @bind-Field="@context.AdmittedSchool"></TableColumn>
+        <TableColumn @bind-Field="@context.TotalScore"></TableColumn>
+        <TableColumn @bind-Field="@context.AdmissionNoticeConfirmed"></TableColumn>
+        <TableColumn @bind-Field="@context.AdmissionTime"></TableColumn>
+    </TableColumns>
+</Table>
+@code {
+    [NotNull]
+    private DialogOption? Option { get; set; }
+
+    private async Task<QueryData<Admission>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var admissions = await AdmissionService.GetAdmissionAsync();
+        return new QueryData<Admission>()
+        {
+            Items = admissions,
+            TotalCount = admissions.Count
+        };
+    }
+
+    private Task<bool> OnSaveAsync(Admission arg1, ItemChangedType arg2)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    private async Task ImportAdmission<TItem>(IEnumerable<TItem> arg)
+    {
+        var op = new DialogOption()
+        {
+            Title = "批量录取",
+            Component = BootstrapDynamicComponent.CreateComponent<ImportAdmissionDialog>(new Dictionary<string, object?>
+            {
+                [nameof(ImportAdmissionDialog.OnCloseAsync)] = new Func<Task>(OnClose)
+            }),
+            ShowFooter = false,
+        };
+        await DialogService.Show(op);
+    }
+
+
+    private async Task DiviClass(IEnumerable<Admission> arg)
+    {
+        var op = new DialogOption()
+        {
+            Title = "分班",
+            Component = BootstrapDynamicComponent.CreateComponent<DiviClassDialog>(new Dictionary<string, object?>()
+            {
+                [nameof(DiviClassDialog.OnCloseAsync)] = new Func<Task>(OnClose),
+                [nameof(DiviClassDialog.Admissions)] = arg
+            }),
+            ShowFooter = false,
+        };
+        await DialogService.Show(op);
+    }
+
+    private Task OnClose() => Option.CloseDialogAsync();
+}

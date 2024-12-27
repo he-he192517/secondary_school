@@ -1,0 +1,36 @@
+﻿@page "/login-redirect"
+@using FurSystemTest.Application.Services
+@using FurSystemTest.Application.Utils
+@using FurSystemTest.Core.Dtos
+@inject IJSRuntime JsRuntime
+@inject NavigationManager Navigation
+@inject IAccountService AccountService
+@inject IHttpContextAccessor HttpContextAccessor
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var queryParams = UtilHelper.GetQueryParams(uri.Query);
+
+        queryParams.TryGetValue("authCode", out var authCode);
+        queryParams.TryGetValue("sessionCode", out var sessionCode);
+
+        var requestParams = new GetAccessCodeRequest
+        {
+            AuthCode = authCode,
+            SessionCode = sessionCode
+        };
+        var data = await AccountService.GetAccessCode(requestParams);
+
+        if (data?.Code == ResponseCode.Success)
+        {
+            await JsRuntime.InvokeVoidAsync("setCookie", "token", data.Data.Token, data.Data.Expires - 60, "/");
+            await JsRuntime.InvokeVoidAsync("setCookie", "refreshToken", data.Data.RefreshToken, data.Data.RefreshToken, "/");
+            await JsRuntime.InvokeVoidAsync("setCookie", "SessionCode", sessionCode, 24 * 60 * 60, "/");
+            Navigation.NavigateTo("/");
+        }
+    }
+
+}

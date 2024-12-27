@@ -1,0 +1,28 @@
+﻿@page "/dailyschedule"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using FurSystemTest.Application.Services.Sys_Teach
+@inject IDailyScheService DailyScheService
+
+<Table TItem="DailySchedule" 
+       OnQueryAsync="OnQueryAsync"
+       ShowToolbar="true"
+       Align="center">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.ActivityName"></TableColumn>
+        <TableColumn @bind-Field="@context.StartTime"></TableColumn>
+        <TableColumn @bind-Field="@context.EndTime"></TableColumn>
+    </TableColumns>
+</Table>
+@code {
+
+    private async Task<QueryData<DailySchedule>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var dailySchedule = await DailyScheService.GetDailySchedule();
+        return new QueryData<DailySchedule>
+        {
+            Items = dailySchedule,
+            TotalCount = dailySchedule.Count
+        };
+    }
+
+}

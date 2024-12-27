@@ -1,0 +1,76 @@
+﻿@page "/transfer"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using FurSystemTest.Core.Enum.Sys_Teach
+@using SqlSugar
+@using FurSystemTest.Core
+
+<Table TItem="Transfer" OnQueryAsync="OnQueryAsync"
+       align="center">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.TeacherId"></TableColumn>
+        <TableColumn @bind-Field="@context.TransferDate"></TableColumn>
+        <TableColumn @bind-Field="@context.TransferType"></TableColumn>
+        @if (@context.TransferType == TransferType.DepartmentChange)
+        {
+            <TableColumn @bind-Field="@context.FromDepartmentId">
+                <Template Context="vv">
+                    @GetDepartmentById((int)vv.Row.FromDepartmentId).DepartmentName
+                </Template>
+            </TableColumn>
+            <TableColumn @bind-Field="@context.ToDepartmentId">
+                <Template Context="vv">
+                    @GetDepartmentById((int)vv.Row.ToDepartmentId).DepartmentName
+                </Template>
+            </TableColumn>
+        }
+        else
+        {
+            <TableColumn @bind-Field="@context.OldResponsibilities"></TableColumn>
+            <TableColumn @bind-Field="@context.NewResponsibilities"></TableColumn>
+        }
+        <TableColumn @bind-Field="@context.Reason"></TableColumn>
+        <TableColumn @bind-Field="@context.Status">
+            <Template Context="vv">
+                @{
+                    switch (vv.Row.Status)
+                    {
+                        case TransferStatus.Pending:
+                            <Badge Color="Color.Primary">待处理</Badge>
+                            break;
+                        case TransferStatus.Approved:
+                            <Badge Color="Color.Success">已批准</Badge>
+                            break;
+                        case TransferStatus.Rejected:
+                            <Badge Color="Color.Danger">已拒绝</Badge>
+                            break;
+                        case TransferStatus.Completed:
+                            <Badge Color="Color.Success">已完成</Badge>
+                            break;
+                        case TransferStatus.Cancelled:
+                            <Badge Color="Color.Info">已取消</Badge>
+                            break;
+                    }
+                }
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="@context.Notes"></TableColumn>
+    </TableColumns>
+</Table>
+@code {
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    private Department GetDepartmentById(int departmentId)
+    {
+        return _db.Queryable<Department>().Where(d => d.DepartmentId == departmentId).First();
+    }
+
+    private async Task<QueryData<Transfer>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var transfers = await _db.Queryable<Transfer>().ToListAsync();
+        return new QueryData<Transfer>()
+        {
+            Items = transfers,
+            TotalCount = transfers.Count
+        };
+    }
+
+}

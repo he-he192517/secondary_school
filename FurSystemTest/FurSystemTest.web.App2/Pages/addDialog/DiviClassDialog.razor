@@ -1,0 +1,76 @@
+﻿@using FurSystemTest.Core.Entites.Admission_System
+@using System.ComponentModel
+@using NPOI.SS.Formula.Functions
+
+
+
+<EditorForm Model="_classmodel" Context="value" ItemsPerRow="1" RowType="RowType.Inline" >
+    <FieldItems>
+        <EditorItem @bind-Field="value.DivMethod">
+            <EditTemplate Context="vv">
+                <Select @bind-Value="vv.DivMethod" Items="_assignmentMethods" DisplayText="分班方式"></Select>
+            </EditTemplate>
+        </EditorItem>
+        <EditorItem @bind-Field="value.NumberOfClasses" Text="分班数量"></EditorItem>
+    </FieldItems>
+    <Buttons>
+        <Button Color="Color.Success" Icon="fa-solid fa-floppy-disk" Text="确认" OnClick="DiviClass"></Button>
+        <DialogCloseButton />
+    </Buttons>
+</EditorForm>
+
+
+@code {
+    [Parameter]
+    public Func<Task>? OnCloseAsync { get; set; }
+
+    [Parameter]
+    public IEnumerable<Admission>? Admissions { get; set; }
+
+    public Admission Admission = new Admission();
+
+    private string _selectedMethod = string.Empty;
+
+    private readonly List<SelectedItem> _assignmentMethods = new List<SelectedItem>();
+
+    private readonly ClassAssignmentModel _classmodel = new ClassAssignmentModel();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _assignmentMethods.Add(new SelectedItem { Text = "按成绩排序分班", Value = "1" });
+        _assignmentMethods.Add(new SelectedItem { Text = "按平均分配分班", Value = "2" });
+    }
+
+    public class ClassAssignmentModel
+    {
+        public string DivMethod { get; set; } = "1";
+        public int NumberOfClasses { get; set; } = 1;
+    }
+
+    private async Task DiviClass()
+    {
+        if (_classmodel.DivMethod.Equals("1"))
+        {
+            var sortedAdmissions = Admissions.OrderByDescending(a => a.TotalScore).ToList();
+
+            var classes = new List<List<Admission>>();
+            for (var i = 0; i < _classmodel.NumberOfClasses; i++)
+            {
+                classes.Add(new List<Admission>());
+            }
+
+            // 逐个分配学生到班级
+            for (var i = 0; i < sortedAdmissions.Count; i++)
+            {
+                var classIndex = i / _classmodel.NumberOfClasses; // 按照顺序分配
+                if (classIndex < classes.Count)
+                {
+                    classes[classIndex].Add(sortedAdmissions[i]);
+                }
+            }
+        }
+    }
+
+}

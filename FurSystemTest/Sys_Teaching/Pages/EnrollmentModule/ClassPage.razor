@@ -1,0 +1,27 @@
+﻿@page "/class"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using SqlSugar
+@using FurSystemTest.Core
+
+<Table TItem="Class" OnQueryAsync="OnQueryAsync"
+       ShowToolbar="true">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.ClassName"></TableColumn>
+        <TableColumn @bind-Field="@context.Grade"></TableColumn>
+        <TableColumn @bind-Field="@context.HomeroomTeacherId"></TableColumn>
+    </TableColumns>
+</Table>
+
+@code {
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    private async Task<QueryData<Class>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var classes = await _db.Queryable<Class>().ToListAsync();
+        return new QueryData<Class>()
+        {
+            Items = classes,
+            TotalCount = classes.Count
+        };
+    }
+
+}

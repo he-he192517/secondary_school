@@ -1,0 +1,68 @@
+﻿@page "/userpage"
+@using FurSystemTest.Application
+@using FurSystemTest.Core.Repository
+@inject IRoleReponsitory RoleReponsitory
+@inject IUserReponsitory UserReponsitory
+
+<AdminTable TItem="User" OnSaveAsync="OnSaveAsync" OnQueryAsync="OnQueryAsync">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.Account" IsReadonlyWhenEdit="true"/>
+        <TableColumn @bind-Field="@context.UserName"/>
+        <TableColumn @bind-Field="@context.UserId" Text="角色" Lookup="Roles">
+            <Template Context="value">
+                <div>@GetRoleName(value.Row.UserId)</div>
+            </Template>
+        </TableColumn>
+    </TableColumns>
+    <RowButtonTemplate Context="Value">
+        <TableToolbarPopConfirmButton Text="重置密码" Content=@($"你是否要重置{Value.UserName}的密码吗") OnConfirm="() => ResetPassword(Value)"></TableToolbarPopConfirmButton>
+    </RowButtonTemplate>
+</AdminTable>
+
+@code {
+    private List<User> _users = new List<User>();
+    private string? _clientId;
+    private List<SelectedItem>? Roles { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _clientId = Furion.App.GetOptions<AppInfoOptions>().ClientId;
+        _users = await UserReponsitory.GetAllUserAsync();
+        var role = await RoleReponsitory.GetAllRolesAsync(_clientId);
+        Roles = role.Select(x => new SelectedItem(x.RoleId.ToString(), x.Remark)).ToList();
+    }
+
+    private async Task<bool> OnSaveAsync(User arg1, ItemChangedType arg2)
+    {
+        if (arg2 == ItemChangedType.Add)
+        {
+            arg1.Password = arg1.UserName;
+        }
+        return true;
+    }
+
+    private string GetRoleName(int userId)
+    {
+        var clientId = Furion.App.GetOptions<AppInfoOptions>().ClientId;
+        var roleName = RoleReponsitory.GetRoleNameByUserId(userId, clientId);
+        return roleName;
+    }
+
+    private async Task<QueryData<User>> OnQueryAsync(QueryPageOptions arg)
+    {
+        var menus = await UserReponsitory.GetAllUserAsync();
+        return new QueryData<User>()
+        {
+            Items = menus,
+            TotalCount = menus.Count
+        };
+    }
+
+    private Task ResetPassword(User user)
+    {
+        user.Password = user.UserName;
+        return Task.CompletedTask;  
+    }
+
+}

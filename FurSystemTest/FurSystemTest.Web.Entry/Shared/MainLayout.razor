@@ -1,0 +1,343 @@
+﻿@inherits LayoutComponentBase
+
+@using System.Text.Json;
+
+<Ajax></Ajax>
+<Layout SideWidth="0" IsPage="true" ShowGotoTop="true" ShowCollapseBar="true"
+        IsFullSide="@IsFullSide" IsFixedHeader="@IsFixedHeader" IsFixedFooter="@IsFixedFooter" ShowFooter="@ShowFooter"
+        TabDefaultUrl="/"
+        Menus="@Menus" UseTabSet="@UseTabSet" AdditionalAssemblies="new[] { GetType().Assembly }" class="@Theme">
+    <Header>
+        <span class="ms-3 flex-sm-fill d-none d-sm-block">Bootstrap of Blazor</span>
+        <div class="flex-fill d-sm-none">
+        </div>
+        <Logout ImageUrl="images/Argo.png" DisplayName=@displayName UserName=@userName>
+            <LinkTemplate>
+                <a href="#"><i class="fa-solid fa-suitcase"></i>个人中心</a>
+                <a href="#"><i class="fa-solid fa-bell"></i>通知<span class="badge badge-pill badge-success"></span></a>
+                <Button Color="Color.Secondary" Text="退出" OnClick="OnLogout" />
+
+            </LinkTemplate>
+        </Logout>
+        <Widget></Widget>
+        <div class="layout-drawer" @onclick="@(e => IsOpen = !IsOpen)"><i class="fa fa-gears"></i></div>
+    </Header>
+    <Side>
+        <div class="layout-banner">
+            <img class="layout-logo" src="images/brand.png" />
+            <div class="layout-title">
+                <span>后台管理</span>
+            </div>
+        </div>
+        <div class="layout-user">
+            <img class="layout-avatar" src="images/Argo-C.png">
+            <div class="layout-title">
+                <span>@userName</span>
+            </div>
+            <div class="layout-user-state"></div>
+        </div>
+    </Side>
+    <Main>
+        <CascadingValue Value="this" IsFixed="true">
+            <div class="text-center main">
+                @Body
+            </div>
+        </CascadingValue>
+    </Main>
+    <Footer>
+        <div class="text-center flex-fill">
+            <a class="page-layout-demo-footer-link" href="https://gitee.com/LongbowEnterprise/BootstrapAdmin" target="_blank">Bootstrap Admin</a>
+        </div>
+    </Footer>
+    <NotFound>
+        <p>Sorry, there's nothing at this address.</p>
+    </NotFound>
+</Layout>
+
+<Drawer Placement="Placement.Right" @bind-IsOpen="@IsOpen" IsBackdrop="true">
+    <div class="layout-drawer-body">
+        <div class="btn btn-info w-100" @onclick="@(e => IsOpen = false)">点击关闭</div>
+        <div class="page-layout-demo-option">
+            <p>布局调整</p>
+            <div class="row">
+                <div class="col-6">
+                    <div class="layout-item @(IsFullSide ? "active d-flex" : "d-flex")" @onclick="@(e => IsFullSide = true)" data-toggle="tooltip" title="左右结构">
+                        <div class="layout-left d-flex flex-column">
+                            <div class="layout-left-header"></div>
+                            <div class="layout-left-body flex-fill"></div>
+                        </div>
+                        <div class="layout-right d-flex flex-column flex-fill">
+                            <div class="layout-right-header"></div>
+                            <div class="layout-right-body flex-fill"></div>
+                            <div class="layout-right-footer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="layout-item flex-column @(IsFullSide ? "d-flex" : "active d-flex")" @onclick="@(e => IsFullSide = false)" data-toggle="tooltip" title="上下结构">
+                        <div class="layout-top">
+                        </div>
+                        <div class="layout-body d-flex flex-fill">
+                            <div class="layout-left">
+                            </div>
+                            <div class="layout-right flex-fill">
+                            </div>
+                        </div>
+                        <div class="layout-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-layout-demo-option">
+            <p>固定调整</p>
+            <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                    <Switch @bind-Value="@IsFixedHeader" OnColor="@Color.Success" OffColor="@Color.Secondary"></Switch>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="cell-label">固定页头</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 d-flex align-items-center">
+                    <Switch @bind-Value="@IsFixedFooter" OnColor="@Color.Success" OffColor="@Color.Secondary"></Switch>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="cell-label">固定页脚</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 d-flex align-items-center">
+                    <Switch @bind-Value="@ShowFooter" OnColor="@Color.Success" OffColor="@Color.Primary"></Switch>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="cell-label">显示页脚</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-layout-demo-option">
+            <p>主题配色</p>
+            <div class="row">
+                <div class="col-2">
+                    <span class="color color1" @onclick="@(e => Theme = "color1")"></span>
+                </div>
+                <div class="col-2">
+                    <span class="color color2" @onclick="@(e => Theme = "color2")"></span>
+                </div>
+                <div class="col-2">
+                    <span class="color color3" @onclick="@(e => Theme = "color3")"></span>
+                </div>
+                <div class="col-2">
+                    <span class="color color4" @onclick="@(e => Theme = "color4")"></span>
+                </div>
+                <div class="col-2">
+                    <span class="color color5" @onclick="@(e => Theme = "color5")"></span>
+                </div>
+                <div class="col-2">
+                    <span class="color color6" @onclick="@(e => Theme = "color6")"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-layout-demo-option">
+            <p>更多设置</p>
+            <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                    <Switch @bind-Value="@UseTabSet" OnColor="@Color.Success" OffColor="@Color.Primary"></Switch>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="cell-label">@(UseTabSet ? "多标签" : "单页")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</Drawer>
+
+@code {
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Inject]
+    private AjaxService AjaxService { get; set; }
+    private AuthenticationState authState { get; set; }
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    private bool UseTabSet { get; set; } = false;
+
+    private string Theme { get; set; } = "";
+
+    private bool IsOpen { get; set; }
+
+    private bool IsFixedHeader { get; set; } = true;
+
+    private bool IsFixedFooter { get; set; } = true;
+
+    private bool IsFullSide { get; set; } = true;
+
+    private bool ShowFooter { get; set; } = true;
+
+    private List<MenuItem> Menus { get; set; }
+
+    private string userName{ get; set; }
+    private string displayName{ get; set; }
+
+    /// <summary>
+    /// OnInitialized 方法
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        authState = AuthenticationStateProvider.GetAuthenticationStateAsync().Result;
+        var role = authState.User.Claims.FirstOrDefault(it => it.Type == "Role")?.Value;
+
+        var username = authState.User.FindFirst("name");
+        userName = username?.Value;
+        userName = _db.Queryable<User>()
+              .Where(u => u.Account == userName)
+              .Select(u => u.UserName)
+              .First();
+        switch (role)
+        {
+            case "SysAdmin":
+                Menus = GetTotalMenuItems();
+                displayName = "超级管理员";
+                break;
+             case "DataAdmin":
+                Menus = GetDataMenuItems();
+                displayName = "管理员";
+                 break;
+             default:
+                Menus = GetMenuItems();
+                displayName = "用户";
+                 break;
+         }
+        //Menus = GetDataMenuItems();
+
+    }
+
+    public async Task OnLogout()
+    {
+        var ajaxOption = new AjaxOption
+            {
+                Url = "/api/rbac/logout",
+                Data = new { },
+
+            };
+        var str = await AjaxService.InvokeAsync(ajaxOption);
+        var result = str;
+        //此处可以加上判断是否退出成功
+        await AjaxService.Goto("/account/login");
+    }
+
+    /// <summary>
+    /// 设置菜单（超级管理员）
+    /// </summary>
+    private static List<MenuItem> GetTotalMenuItems()
+    {
+        var menus = new List<MenuItem>
+        {
+        new MenuItem() { Text = "首页", Icon = "fa-solid fa-fw fa-database", Url = "/showdatapage" },
+        new MenuItem() { Text = "常见病监测表(中小学生版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebapage" , Match = NavLinkMatch.All},
+        new MenuItem() { Text = "常见病监测表(大学生版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebbpage" },
+        new MenuItem() { Text = "常见病监测表(幼儿园版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebcpage" },
+        new MenuItem() { Text = "健康及影响因素调查表(小学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablecapage"},
+        new MenuItem() { Text = "健康及影响因素调查表(中学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablecbpage" },
+        new MenuItem() { Text = "健康及影响因素调查表(大学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tableccpage" },
+        new MenuItem() { Text = "数据录入", Icon = "fa-solid fa-fw fa-database", Url = "/readexcel" },
+    };
+        return menus;
+
+    }
+
+    /// <summary>
+    /// 设置菜单（数据管理员）
+    /// </summary>
+    private static List<MenuItem> GetDataMenuItems()
+    {
+        var menus = new List<MenuItem>
+        {
+        new MenuItem() { Text = "首页", Icon = "fa-solid fa-fw fa-database", Url = "/showdatapage" },
+        new MenuItem() { Text = "常见病监测表(中小学生版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebapage" , Match = NavLinkMatch.All},
+        new MenuItem() { Text = "常见病监测表(大学生版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebbpage" },
+        new MenuItem() { Text = "常见病监测表(幼儿园版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebcpage" },
+        new MenuItem() { Text = "健康及影响因素调查表(小学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablecapage"},
+        new MenuItem() { Text = "健康及影响因素调查表(中学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablecbpage" },
+        new MenuItem() { Text = "健康及影响因素调查表(大学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tableccpage" },
+    };
+        return menus;
+
+    }
+
+    /// <summary>
+    /// 设置菜单（普通用户）
+    /// </summary>
+    private static List<MenuItem> GetMenuItems()
+    {
+        var menus = new List<MenuItem>
+        {
+        new MenuItem() { Text = "首页", Icon = "fa-solid fa-fw fa-database", Url = "/showdatapage" },
+        new MenuItem() { Text = "常见病监测表(中小学生版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebapage" , Match = NavLinkMatch.All},
+        new MenuItem() { Text = "常见病监测表(大学生版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebbpage" },
+        new MenuItem() { Text = "常见病监测表(幼儿园版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablebcpage" },
+        new MenuItem() { Text = "健康及影响因素调查表(小学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablecapage"},
+        new MenuItem() { Text = "健康及影响因素调查表(中学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tablecbpage" },
+        new MenuItem() { Text = "健康及影响因素调查表(大学版)", Icon = "fa-solid fa-fw fa-database", Url = "/tableccpage" },
+    };
+        return menus;
+
+    }
+
+
+
+    private static List<MenuItem> GetDataAdminSideMenuItems()
+    {
+        var menus = new List<MenuItem>
+        {
+        new MenuItem() { Text = "系统主页", Icon = "fa-solid fa-fw fa-flag", Url = "/" , Match = NavLinkMatch.All},
+        new MenuItem() { Text = "计数组件", Icon = "fa-solid fa-fw fa-check-square", Url = "/counter" },
+        new MenuItem() { Text = "获取数据", Icon = "fa-solid fa-fw fa-database", Url = "fetchdata" },
+        new MenuItem() { Text = "表格操作", Icon = "fa-solid fa-fw fa-table", Url = "tableoper" },
+        new MenuItem() { Text = "存在问题", Icon = "fa-solid fa-fw fa-users", Url = "question" },
+        new MenuItem() { Text = "数据管理", Icon = "fa-solid fa-fw fa-users", Url = "dataadmin" }
+    };
+        return menus;
+    }
+
+    private static List<MenuItem> GetSysAdminSideMenuItems()
+    {
+        var menus = new List<MenuItem>
+        {
+        new MenuItem() { Text = "系统主页", Icon = "fa-solid fa-fw fa-flag", Url = "/" , Match = NavLinkMatch.All},
+        new MenuItem() { Text = "计数组件", Icon = "fa-solid fa-fw fa-check-square", Url = "/counter" },
+        new MenuItem() { Text = "获取数据", Icon = "fa-solid fa-fw fa-database", Url = "fetchdata" },
+
+        new MenuItem() { Text = "表格操作", Icon = "fa-solid fa-fw fa-table", Url = "tableoper" },
+        new MenuItem() { Text = "存在问题", Icon = "fa-solid fa-fw fa-users", Url = "question" }
+    };
+
+        return menus;
+    }
+    private static List<MenuItem> GetIconSideMenuItems()
+    {
+        var menu1 = new MenuItem() { Text = "系统主页", Icon = "fa-solid fa-fw fa-flag", Url = "/", Match = NavLinkMatch.All };
+
+        var menu2 = new MenuItem() { Url = "/counter", Text = "计数组件", Icon = "fa-solid fa-fw fa-check-square" };
+
+        var menu3 = new MenuItem() { Target = "_blank", Url = "https://www.baidu.com", Text = "百度一下", Icon = "fa-solid fa-fw fa-database" };
+
+        var menu4 = new MenuItem() { Text = "表格操作", Icon = "fa-solid fa-fw fa-table", Url = "tableoper" };
+
+        var menu5 = new MenuItem() { Text = "存在问题", Icon = "fa-solid fa-fw fa-users", Url = "question" };
+
+        menu2.Parent = menu1;
+        menu3.Parent = menu1;
+        menu4.Parent = menu1;
+        menu5.Parent = menu4;
+        var menus = new List<MenuItem>
+        {
+            menu1, menu2,menu3, menu4, menu5
+        };
+        return menus;
+    }
+}

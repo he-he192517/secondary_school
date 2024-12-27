@@ -1,0 +1,26 @@
+﻿global using System.ComponentModel.DataAnnotations;
+global using Furion;
+global using Furion.DataEncryption;
+global using Furion.DataValidation;
+global using Furion.DependencyInjection;
+global using Furion.DynamicApiController;
+global using Furion.Extensions;
+global using Furion.FriendlyException;
+global using Furion.Logging;
+global using Mapster;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.CodeAnalysis;
+global using SqlSugar;
+global using System.Net.Http;
+global using Microsoft.AspNetCore.Components.Authorization;
+global using Microsoft.AspNetCore.Components.Forms;
+global using Microsoft.AspNetCore.Components.Routing;
+global using Microsoft.AspNetCore.Components.Web;
+global using Microsoft.AspNetCore.Components.Web.Virtualization;
+global using Microsoft.JSInterop;
+global using FurSystemTest.Core;
+global using System.Diagnostics.CodeAnalysis;
+global using Microsoft.AspNetCore.Authentication.Cookies;
+

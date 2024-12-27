@@ -1,0 +1,177 @@
+﻿@page "/ImportAdmissionDialog"
+@using SqlSugar
+@using FurSystemTest.Core
+@using FurSystemTest.Core.Entites.Admission_System
+@using NPOI.HSSF.UserModel
+@using System.Reflection
+@using FurSystemTest.Core.Dtos.Admission_System
+@using NPOI.SS.UserModel
+@using System.ComponentModel.DataAnnotations
+@using FurSystemTest.Application.Services.Admission_System
+@using FurSystemTest.Core.Enum.Admission_System
+@using NPOI.XSSF.UserModel
+@using SqlSugar.Extensions
+@inject ToastService ToastService
+@inject ISchoolService SchoolService
+
+
+<ButtonUpload TValue="string" ShowDownloadButton="true"
+              IsSingle="true" Accept="" OnChange="@SaveToFile"
+              BrowserButtonText="上传录取excel" BrowserButtonIcon="fa-solid fa-cloud-arrow-up">
+</ButtonUpload>
+<Table TItem="StuAdmissionDto" OnQueryAsync="OnQueryAsync">
+    <TableColumns>
+        <TableColumn @bind-Field="context.Name"></TableColumn>
+        <TableColumn @bind-Field="context.Gender"></TableColumn>
+        <TableColumn @bind-Field="context.ExamNumber"></TableColumn>
+        <TableColumn @bind-Field="context.CandidateNumber"></TableColumn>
+        <TableColumn @bind-Field="context.PhoneNumber"></TableColumn>
+        <TableColumn @bind-Field="context.IdNumber"></TableColumn>
+        <TableColumn @bind-Field="context.SchoolId">
+            <Template Context="value">
+                <div>@SchoolService.GetSchoolById(value.Row.SchoolId).SchoolName</div>
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="context.TotalScore"></TableColumn>
+        <TableColumn @bind-Field="context.AdmittedSchool">
+            <Template Context="value">
+                <div>@SchoolService.GetSchoolById(value.Row.AdmittedSchool).SchoolName</div>
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="context.AdmissionNoticeConfirmed"></TableColumn>
+    </TableColumns>
+</Table>
+<Divider />
+<div style="margin-top: 1rem; text-align:right;">
+    <Button Color="Color.Success" Icon="fa-solid fa-floppy-disk" Text="确认"></Button>
+    <DialogCloseButton />
+</div>
+
+<pre></pre>
+@code {
+
+    [Parameter]
+    public Func<Task>? OnCloseAsync { get; set; }
+
+    public StuAdmissionDto StudentAdmissionDto = new StuAdmissionDto();
+    public List<StuAdmissionDto> StuAdmissionDtos = new List<StuAdmissionDto>();
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    private string uploadPath = "uploads\\import"; //导入任务文件的固定存储位置
+    private string fileName = ""; //文件名
+    private long maxFileSize = 1024 * 1024 * 30;  //文件大小
+    private FileStream fs = null;
+    private IWorkbook workbook = null;
+
+    private async Task OnClick()
+    {
+        if (OnCloseAsync != null)
+        {
+            await OnCloseAsync();
+        }
+    }
+
+    /// <summary>
+    /// 批量录取
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    private async Task<bool> SaveToFile(UploadFile arg)
+    {
+        if (arg.OriginFileName != null && (arg.OriginFileName.EndsWith(".xls") || arg.OriginFileName.EndsWith(".xlsx")))
+        {
+            var filePath = Path.Combine(Environment.CurrentDirectory, uploadPath);  // 导入文件的存储位置
+            if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath); // 若存储目录不存在，则创建
+
+            // 生成上传文件名称
+            arg.FileName = $"{Path.GetFileNameWithoutExtension(arg.OriginFileName)}{Path.GetExtension(arg.OriginFileName)}";
+            fileName = Path.Combine(uploadPath, arg.FileName); //   存储路径 + 原文件名 +  扩展名
+            if (!File.Exists(fileName)) File.Delete(fileName); // 若文件存在，则先删除文件
+
+            // 存放到服务器中
+            var ret = await arg.SaveToFileAsync(fileName, maxFileSize, default);
+            if (ret)
+            {
+                await ToastService.Success("文件上传", "文件上传成功！");
+
+                // 处理 Excel 数据
+                await ProcessExcelData(fileName);
+                    fileName = "";
+            }
+            else
+            {
+                var errorMessage = $"{arg.FileName}" + "保存失败！";
+                arg.Code = 1;
+                arg.Error = errorMessage;
+                await ToastService.Error("文件上传", errorMessage);
+            }
+            return ret;
+        }
+        else
+        {
+            await ToastService.Error("文件导入", "文件类型不正确，文件导入失败，请重新选择文件导入！");
+            return false;
+        }
+    }
+
+    private async Task ProcessExcelData(string filePath)
+    {
+        await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        if (filePath.IndexOf(".xlsx", StringComparison.Ordinal) > 0) // 2007版本
+            workbook = new XSSFWorkbook(fileStream);
+        else if (filePath.IndexOf(".xls", StringComparison.Ordinal) > 0) // 2003版本
+            workbook = new HSSFWorkbook(fileStream);
+
+        var sheet = workbook.GetSheetAt(0); // 获取第一个工作表
+        for (var row = 2; row <= sheet.LastRowNum; row++)
+        {
+            var currentRow = sheet.GetRow(row);
+            if (currentRow == null) continue; //没有数据的行默认是null　　　
+            StudentAdmissionDto.ExamNumber = currentRow.GetCell(1)?.ToString();
+            StudentAdmissionDto.CandidateNumber = currentRow.GetCell(2)?.ToString();
+            StudentAdmissionDto.Name = currentRow.GetCell(3)?.ToString();
+            StudentAdmissionDto.Gender = GetEnumValueFromDisplayName<GenderType>(currentRow.GetCell(4).StringCellValue);
+            decimal.TryParse(currentRow.GetCell(5).StringCellValue, out decimal totalScore);
+            StudentAdmissionDto.TotalScore = totalScore;
+            StudentAdmissionDto.SchoolId = SchoolService.GetSchoolByName(currentRow.GetCell(6).StringCellValue).SchoolID;
+            StudentAdmissionDto.PhoneNumber = currentRow.GetCell(7).StringCellValue;
+            StudentAdmissionDto.IdNumber = currentRow.GetCell(8).StringCellValue;
+            StudentAdmissionDto.AdmittedSchool = SchoolService.GetSchoolByName(currentRow.GetCell(9).StringCellValue).SchoolID;
+            StuAdmissionDtos.Add(StudentAdmissionDto);
+        }
+        StateHasChanged();
+    }
+
+    private async Task<QueryData<StuAdmissionDto>> OnQueryAsync(QueryPageOptions arg)
+    {
+        return new QueryData<StuAdmissionDto>
+            {
+                Items = StuAdmissionDtos,
+                TotalCount = StuAdmissionDtos.Count
+            };
+    }
+
+    /// <summary>
+    /// 获取枚举值
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="displayName"></param>
+    /// <returns></returns>
+    public static T GetEnumValueFromDisplayName<T>(string displayName) where T : Enum
+    {
+        var fields = typeof(T).GetFields();
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.GetCustomAttribute<DisplayAttribute>() is DisplayAttribute displayAttribute)
+            {
+                if (displayAttribute.Name == displayName)
+                {
+                    return (T)field.GetValue(null);
+                }
+            }
+        }
+
+        return default(T);
+    }
+
+}

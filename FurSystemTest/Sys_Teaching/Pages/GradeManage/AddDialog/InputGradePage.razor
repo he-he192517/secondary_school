@@ -1,0 +1,137 @@
+﻿@page "/InputPage"
+@using FurSystemTest.Core.Entites.Sys_Teach
+@using SqlSugar
+@using FurSystemTest.Core
+
+
+<EditorForm Model="InputGrade" RowType="RowType.Inline" LabelAlign="Alignment.Left">
+    <FieldItems>
+        <EditorItem @bind-Field="@context.SubjectId" Text="考试科目">
+            <EditTemplate Context="vv">
+                <div class="col-12 col-sm-6">
+                    <Select @bind-Value="vv.SubjectId" Items="Subjects" DisplayText="考试科目"></Select>
+                </div>
+            </EditTemplate>
+        </EditorItem>
+        <EditorItem @bind-Field="InputGrade.ExamId" Text="考试场次">
+            <EditTemplate Context="vv">
+                <div class="col-12 col-sm-6">
+                    <Select @bind-Value="vv.ExamId" Items="Exams"></Select>
+                </div>
+            </EditTemplate>
+        </EditorItem>
+        <EditorItem @bind-Field="InputGrade.ClassId" Text="班级">
+            <EditTemplate Context="vv">
+                <div class="col-12 col-sm-6">
+                    <Select @bind-Value="vv.ClassId" Items="_class"></Select>
+                </div>
+            </EditTemplate>
+        </EditorItem>
+    </FieldItems>
+    <Buttons>
+        <Button Text="查询" ButtonType="ButtonType.Submit" @onclick="OnSearsh"></Button>
+    </Buttons>
+</EditorForm>
+<Divider></Divider>
+<Table TItem="ExamScore" OnQueryAsync="OnQueryAsync"
+       ShowEmpty="true"
+       @ref="ExamScoreTable">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.StudentNumber"></TableColumn>
+        <TableColumn @bind-Field="@context.Score">
+            <Template Context="v">
+                <BootstrapInput @bind-Value="v.Row.Score" DisplayText="请输入分数"/>
+            </Template>
+        </TableColumn>
+        <TableColumn @bind-Field="@context.Status">
+            <Template Context="v">
+                <Select @bind-Value="v.Row.Status" DisplayText="考试状态"></Select>
+            </Template>
+        </TableColumn>
+    </TableColumns>
+</Table>
+<Divider></Divider>
+@code {
+    [Parameter]
+    public Func<Task>? OnCloseAsync { get; set; }
+    public InputGradeDto InputGrade = new InputGradeDto();
+    private readonly ISqlSugarClient _db = DbContext.Instance;
+    public IEnumerable<SelectedItem> Subjects = new List<SelectedItem>();
+    public IEnumerable<SelectedItem> Exams = new List<SelectedItem>();
+    public IEnumerable<SelectedItem> _class = new List<SelectedItem>();
+    public List<ExamScore> _examScores = new List<ExamScore>();
+    private Table<ExamScore> ExamScoreTable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Subjects = await _db.Queryable<Subject>().Select(s => new SelectedItem { Text = s.SubjectName, Value = s.SubjectId.ToString() }).ToListAsync();
+        Exams = await _db.Queryable<Exam>().Select(s => new SelectedItem { Text = s.ExamName, Value = s.ExamId.ToString() }).ToListAsync();
+        _class = await _db.Queryable<Class>().Select(s => new SelectedItem { Text = s.ClassName, Value = s.ClassId.ToString() }).ToListAsync();
+        await base.OnInitializedAsync();
+    }
+
+    public class InputGradeDto
+    {
+        public int SubjectId { get; set; }
+        public int ExamId { get; set; }
+        public int ClassId { get; set; }
+
+    }
+
+    private async void OnSearsh()
+    {
+        // 获取班级的所有学生
+        var students = await _db.Queryable<Student>()
+            .Where(it => it.ClassId == InputGrade.ClassId)
+            .ToListAsync();
+
+        // 获取当前考试的成绩
+        var existingScores = await _db.Queryable<ExamScore>()
+            .Where(it => it.ExamId == InputGrade.ExamId && students.Select(s => s.StudentNumber).Contains(it.StudentNumber))
+            .ToListAsync();
+
+        // 将成绩存储在字典中，便于快速查找
+        var existingScoreDict = existingScores.ToDictionary(score => score.StudentNumber);
+
+        // 清空之前的考试成绩列表
+        _examScores.Clear();
+
+        // 遍历学生，填充考试成绩列表
+        foreach (var student in students)
+        {
+            if (existingScoreDict.TryGetValue(student.StudentNumber, out var examScore))
+            {
+                // 如果已有成绩，直接使用
+                _examScores.Add(examScore);
+            }
+            else
+            {
+                // 否则创建新的成绩记录
+                var newExamScore = new ExamScore()
+                {
+                    StudentNumber = student.StudentNumber,
+                    SubjectName = InputGrade.SubjectId,
+                    ClassName = InputGrade.ClassId,
+                    TeacherId = 2021181,
+                    EntryDate = DateTime.Now,
+                    ExamId = InputGrade.ExamId
+                };
+                _examScores.Add(newExamScore);
+            }
+        }
+        // _examScores = await _db.Queryable<ExamScore>().ToListAsync();
+
+        await ExamScoreTable.QueryAsync();
+        StateHasChanged();
+    }
+
+    private async Task<QueryData<ExamScore>> OnQueryAsync(QueryPageOptions arg)
+    {
+        return new QueryData<ExamScore>()
+            {
+                Items = _examScores,
+                TotalCount = _examScores.Count
+            };
+    }
+
+}

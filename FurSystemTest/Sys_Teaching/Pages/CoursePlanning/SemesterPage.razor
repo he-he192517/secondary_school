@@ -1,0 +1,13 @@
+﻿@page "/semester"
+@using FurSystemTest.Core.Entites.Sys_Teach
+
+<Table TItem="Semester">
+    <TableColumns>
+        <TableColumn Text="学期名称" @bind-Field="context.SemesterName"></TableColumn>
+        <TableColumn Text="学期开始时间" @bind-Field="context.StartDate"></TableColumn>
+        <TableColumn Text="学期结束时间" @bind-Field="context.EndDate"></TableColumn>
+    </TableColumns>
+</Table>
+@code {
+
+}

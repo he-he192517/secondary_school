@@ -2,20 +2,25 @@
 @using FurSystemTest.Core.Entites.Sys_Teach
 @using SqlSugar
 @using FurSystemTest.Core
-
+@using FurSystemTest.Core.Entites
+@using FurSystemTest.Application.Services.Sys_Teach
+@using System.Diagnostics.CodeAnalysis
+@using FurSystemTest.Application
+@using Sys_Teaching.Pages.TRM.TeacherDialog
+@inject ITeacherService TeacherService
 <Table TItem="Teacher"
-       OnQueryAsync="OnQueryAsync" ShowToolbar="true"
+       IsPagination="true"
+       IsMultipleSelect="true"
+
+       OnQueryAsync="OnQueryAsync" ShowToolbar="true" OnSaveAsync="OnSavaAsync" OnDeleteAsync="OnDeleteAsync"
        align="center">
     <TableColumns>
+
         <TableColumn @bind-Field="@context.TeacherCode"></TableColumn>
         <TableColumn @bind-Field="@context.TeacherName"></TableColumn>
         <TableColumn @bind-Field="@context.EntryYear"></TableColumn>
         <TableColumn @bind-Field="@context.Position"></TableColumn>
-        <TableColumn @bind-Field="@context.DepartmentId">
-            <Template Context="vv">
-                @GetDepartmentById(vv.Row.DepartmentId).DepartmentName
-            </Template>
-        </TableColumn>
+        <TableColumn @bind-Field="@context.DepartmentId"></TableColumn>
     </TableColumns>
 </Table>
 @code {
@@ -29,9 +34,46 @@
             TotalCount = teachers.Count
         };
     }
+    private async Task<bool> OnSavaAsync(Teacher arg1, ItemChangedType arg2)
+    {
+        //获取serialNumber表的第一条数据中的teacherSerial
+        var serial = _db.Queryable<SerialNumber>().First();
 
+        var serialNumber = serial.TeacherSerial;
+        //生成教师编号，规则为：年份 + serialNumber
+        arg1.TeacherCode = DateTime.Now.Year.ToString() + serialNumber;
+        //将serialNumber转换为int,然后自增1
+        var serialNumberInt = Convert.ToInt32(serialNumber) + 1;
+        serial.TeacherSerial = serialNumberInt.ToString();
+        //更新serialNumber表
+        _db.Updateable(serial).ExecuteCommand();
+        await TeacherService.SaveTeacherAsync(arg1);
+       
+        return true;
+    }
     private Department GetDepartmentById(int departmentId)
     {
         return _db.Queryable<Department>().Where(d => d.DepartmentId == departmentId).First();
     }
+    private Position GetPositionById(int positionId)
+    {
+        return _db.Queryable<Position>().Where(d => d.PositionId == positionId).First();
+    }
+    private async Task<bool> OnDeleteAsync(IEnumerable<Teacher> arg)
+    {
+        if (!await TeacherService.DeleteTeacherAsync(arg)) return false;
+        return true;
+    }
+    ///// <summary>
+    ///// 关闭dialog
+    ///// </summary>
+    ///// <returns></returns>
+    //private async Task OnClose2()
+    //{
+    //    await LoadData();
+
+    //    await op.CloseDialogAsync();
+    //    StateHasChanged();
+
+    //}
 }

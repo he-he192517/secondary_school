@@ -1,4 +1,5 @@
-﻿using FurSystemTest.Core.Entites.Sys_Teach;
+﻿using FurSystemTest.Core.Entites;
+using FurSystemTest.Core.Entites.Sys_Teach;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,10 @@ namespace FurSystemTest.Application.Services.Sys_Teach
         /// <param name="teacherId"></param>
         /// <returns></returns>
         public Teacher GetTeacherById(int teacherId);
+
+
+        public Task<bool> SaveTeacherAsync(Teacher teacher);
+
+        public Task<bool> DeleteTeacherAsync(IEnumerable<Teacher> teachers);
     }
 }

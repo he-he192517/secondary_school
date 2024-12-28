@@ -220,6 +220,24 @@ namespace FurSystemTest.Core.Enum.Sys_Teach
         AcademicDirectorGradeHead = 5
     }
 
+    public enum DepartmentType
+    {
+        [Display(Name = "校长办公室")]
+        SubjectTeacher = 1,
+
+        [Display(Name = "教务处")]
+        AcademicClerk = 2,
+
+        [Display(Name = "学工处")]
+        LabTechnician = 3,
+
+        [Display(Name = "教师队伍")]
+        PrincipalVicePrincipal = 4,
+
+        [Display(Name = "班主任")]
+        AcademicDirectorGradeHead = 5
+    }
+
     /// <summary>
     /// 调动类型
     /// </summary>

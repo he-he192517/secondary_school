@@ -35,9 +35,9 @@ namespace FurSystemTest.Core.Entites.Sys_Teach
         /// <summary>
         /// 入编年份
         /// </summary>
-        [SugarColumn(ColumnDataType = "int", ColumnName = "EntryYear")]
+        [SugarColumn(ColumnDataType = "date", ColumnName = "EntryYear")]
         [Description("入编年份")]
-        public int EntryYear { get; set; }
+        public DateTime EntryYear { get; set; }
 
         /// <summary>
         /// 激活状态
@@ -57,6 +57,6 @@ namespace FurSystemTest.Core.Entites.Sys_Teach
         /// </summary>
         [SugarColumn(ColumnName = "DepartmentId")]
         [Description("所在部门")]
-        public int DepartmentId { get; set; } // 外键，指向部门表
+        public DepartmentType DepartmentId { get; set; } // 外键，指向部门表
     }
 }

@@ -210,6 +210,31 @@
                 用户信息
             </summary>
         </member>
+        <member name="P:FurSystemTest.Core.Dtos.TableDtos.TeacherDto.TeacherName">
+            <summary>
+            教师姓名
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.TableDtos.TeacherDto.EntryYear">
+            <summary>
+            入编年份
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.TableDtos.TeacherDto.IsActive">
+            <summary>
+            激活状态
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.TableDtos.TeacherDto.Position">
+            <summary>
+            职务
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Dtos.TableDtos.TeacherDto.DepartmentId">
+            <summary>
+            所在部门
+            </summary>
+        </member>
         <member name="T:FurSystemTest.Core.Entites.Admission_System.Admission">
             <summary>
             录取表
@@ -548,6 +573,16 @@
         <member name="P:FurSystemTest.Core.Entites.Sys_Teach.ExamScore.ExamId">
             <summary>
             考试ID
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Position.PositionId">
+            <summary>
+            职务id
+            </summary>
+        </member>
+        <member name="P:FurSystemTest.Core.Entites.Sys_Teach.Position.PositionName">
+            <summary>
+            职务名称
             </summary>
         </member>
         <member name="T:FurSystemTest.Core.Entites.Sys_Teach.Semester">

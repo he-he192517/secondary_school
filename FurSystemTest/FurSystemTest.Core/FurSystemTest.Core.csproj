@@ -4,6 +4,17 @@
 		<NoWarn>1701;1702;1591</NoWarn>
 		<DocumentationFile>FurSystemTest.Core.xml</DocumentationFile>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Dtos\Admission_System\新文件夹\**" />
+	  <Compile Remove="Dtos\新文件夹1\**" />
+	  <Compile Remove="Dtos\新文件夹2\**" />
+	  <EmbeddedResource Remove="Dtos\Admission_System\新文件夹\**" />
+	  <EmbeddedResource Remove="Dtos\新文件夹1\**" />
+	  <EmbeddedResource Remove="Dtos\新文件夹2\**" />
+	  <None Remove="Dtos\Admission_System\新文件夹\**" />
+	  <None Remove="Dtos\新文件夹1\**" />
+	  <None Remove="Dtos\新文件夹2\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Remove="dbsettings.json" />
